@@ -24,6 +24,10 @@ class BurgerIngradient extends Component {
         case ('cheese'):
             ingradient = < div className = { classes.Cheese } > < /div>;
             break;
+        case ('bacon'):
+            ingradient = < div className = { classes.Bacon } > < /div>;
+            break;
+
 
         default:
             ingradient = null;
