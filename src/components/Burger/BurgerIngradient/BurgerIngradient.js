@@ -26,7 +26,8 @@ class BurgerIngradient extends Component {
     };
 
     return ingradient;
-};}
+};
+}
 
 
 BurgerIngradient.propTypes = {

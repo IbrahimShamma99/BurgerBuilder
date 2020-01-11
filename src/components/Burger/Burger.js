@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import classes from './Burger.css';
 
-
-class Burger extends Component {
-
-
-
+const burger = (props) => {
+    return (
+        <div>
+        </div>
+    );
 };
 
-export default Burger;
+export default burger;
