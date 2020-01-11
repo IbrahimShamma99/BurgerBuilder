@@ -9,8 +9,8 @@ class BurgerIngradient extends Component {
         case ('bread-buttom'):
             ingradient = < div className = { classes.BreadBottom } > < /div>;
             break;
-        case ('bread-buttom'):
-            ingradient = < div className = { classes.BreadBottom } >
+        case ('bread-top'):
+            ingradient = < div className = { classes.BreadTop } >
                 <div className = { classes.Seeds1 } > </div> 
                 <div className = { classes.Seeds2 } > </div> 
                 </div> ;
@@ -21,6 +21,10 @@ class BurgerIngradient extends Component {
         case ('salad'):
             ingradient = < div className = { classes.Salad } > < /div>;
             break;
+        case ('cheese'):
+            ingradient = < div className = { classes.Cheese } > < /div>;
+            break;
+
         default:
             ingradient = null;
     };
