@@ -14,10 +14,10 @@ class BurgerBuilder extends Component {
 
     state = {
         ingradients:{
-            salad:1,
-            cheese:2,
-            meat:2,
-            bacon:3
+            salad:0,
+            cheese:0,
+            meat:0,
+            bacon:0
         },
         totalPrice:4
     };
@@ -25,7 +25,10 @@ class BurgerBuilder extends Component {
         const oldCount = this.state.ingradients[type];
         var updatedCount = null;
         if (operation==="ADD"){updatedCount = oldCount +1 ;}
-        else if (operation==="REM"){updatedCount = oldCount -1;};
+        else if (operation==="REM"){
+            if (oldCount === 0){return {...this.state.ingradients}}
+            updatedCount = oldCount -1;};
+
         const updatedIngradients = {...this.state.ingradients};
         updatedIngradients[type]=updatedCount;
         return updatedIngradients ;
@@ -37,6 +40,8 @@ class BurgerBuilder extends Component {
         if (operation==="ADD"){
             newPrice = oldPrice + valueAdded;}
         else if(operation === "REM") {
+            if (oldPrice === 4){return {...this.state.totalPrice}}
+
              newPrice = oldPrice - valueAdded;
         }
         return newPrice ;
@@ -60,7 +65,9 @@ class BurgerBuilder extends Component {
         return ( 
             <Aux>
             <Burger ingradients={this.state.ingradients} />
-            <BuildControls/>
+            <BuildControls
+              add = {this.addIngradientHandler}
+              remove={this.removeIngradientHandler}/>
             </Aux>
         );
     }
