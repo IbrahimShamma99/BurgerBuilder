@@ -14,6 +14,22 @@ class BurgerBuilder extends Component {
             bacon:0
         },
         totalPrice:4,
+        purchasable:false
+    };
+
+    updatePurchase = ()=> {
+        const ingradients = {...this.state.ingradients};
+        var sum = 0 ;
+        //NOTE Outputs salad cheese meat bacon
+        Object.keys(ingradients)
+        .map((key)=>{
+            let element=ingradients[key];//NOTE Ex:ingradients["salad"]=(5)
+            sum +=element;
+            return element
+        });
+
+        if (sum ===0){this.setState({purchasable:false})}
+        else{this.setState({purchasable:true})};
     };
     updateIndradientList = function(type , operation) {        
         const oldCount = this.state.ingradients[type];
@@ -21,7 +37,8 @@ class BurgerBuilder extends Component {
         if (operation==="ADD"){updatedCount = oldCount +1 ;}
         else if (operation==="REM"){
             if (oldCount === 0){return {...this.state.ingradients}}
-            updatedCount = oldCount -1;};
+            updatedCount = oldCount -1;
+        };
 
         const updatedIngradients = {...this.state.ingradients};
         updatedIngradients[type]=updatedCount;
@@ -45,13 +62,14 @@ class BurgerBuilder extends Component {
         const updatedIngradients = this.updateIndradientList(type,"ADD");
         const newPrice =this.updatePrice(type,"ADD");
         this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
-
+        this.updatePurchase();
     };
 
     removeIngradientHandler = (type) => {
         const updatedIngradients = this.updateIndradientList(type,"REM");
         const newPrice =this.updatePrice(type,"REM");
         this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
+        this.updatePurchase();
 
     };
     render() {
@@ -62,6 +80,7 @@ class BurgerBuilder extends Component {
               add = {this.addIngradientHandler}
               remove={this.removeIngradientHandler}
               price={this.state.totalPrice}
+              purchasable={this.state.purchasable}
               />
             </Aux>
         );

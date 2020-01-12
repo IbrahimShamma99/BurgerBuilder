@@ -28,9 +28,14 @@ const buildControl = (props) => (
      key={control.label}
      type={control.type} 
      add = {()=>props.add(control.type)} 
-     remove = {()=>props.remove(control.type)}/>
+     remove = {()=>props.remove(control.type)}
+     />
     )
     }
+    <button 
+    className={classes.OrderButton}
+    disabled={!props.purchasable}
+    >ORDER NOW</button>
     </div>
 )
 
