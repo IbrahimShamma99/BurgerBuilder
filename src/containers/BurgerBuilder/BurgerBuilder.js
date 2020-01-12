@@ -73,7 +73,9 @@ class BurgerBuilder extends Component {
     purchasingHandler = ()=>{
             this.setState({purchasing:true});
     };
-
+    NotPurchasingHandler = () =>{
+        this.setState({purchasing:false});
+    };
     addIngradientHandler = (type) => {
         const updatedIngradients = this.updateIndradientList(type,"ADD");
         const newPrice =this.updatePrice(type,"ADD");
@@ -91,7 +93,7 @@ class BurgerBuilder extends Component {
     render(){
         return (
             <Aux>
-            <Modal
+            <Modal modalClosed={this.NotPurchasingHandler}
             show = {this.state.purchasing}
             >
                 <OrderSummary ingradients={this.state.ingradients}/>
