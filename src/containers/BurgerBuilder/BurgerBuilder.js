@@ -16,9 +16,10 @@ class BurgerBuilder extends Component {
         },
         totalPrice:4,
         purchasable:false,
+        purchasing:false
     };
 
-    updatePurchase = ()=> {
+    updatePurchasable = ()=> {
         const ingradients = {...this.state.ingradients};
         var sum = 0 ;
         //NOTE Outputs salad cheese meat bacon
@@ -69,25 +70,30 @@ class BurgerBuilder extends Component {
         }
         return newPrice ;
     };
+    purchasingHandler = ()=>{
+            this.setState({purchasing:true});
+    };
 
     addIngradientHandler = (type) => {
         const updatedIngradients = this.updateIndradientList(type,"ADD");
         const newPrice =this.updatePrice(type,"ADD");
         this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
-        this.updatePurchase();
+        this.updatePurchasable();
     };
 
     removeIngradientHandler = (type) => {
         const updatedIngradients = this.updateIndradientList(type,"REM");
         const newPrice =this.updatePrice(type,"REM");
         this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
-        this.updatePurchase();
+        this.updatePurchasable();
     };
     
     render(){
         return (
             <Aux>
-            <Modal>
+            <Modal
+            show = {this.state.purchasing}
+            >
                 <OrderSummary ingradients={this.state.ingradients}/>
             </Modal>
             <Burger ingradients={this.state.ingradients} />
@@ -96,6 +102,7 @@ class BurgerBuilder extends Component {
               remove={this.removeIngradientHandler}
               price={this.state.totalPrice}
               purchasable={this.state.purchasable}
+              purchasing = {this.purchasingHandler}
               />
             </Aux>
         );
