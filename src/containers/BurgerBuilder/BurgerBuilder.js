@@ -57,11 +57,12 @@ class BurgerBuilder extends Component {
     render() {
         return ( 
             <Aux>
-            <Burger price={this.state.totalPrice}
-             ingradients={this.state.ingradients} />
+            <Burger ingradients={this.state.ingradients} />
             <BuildControls
               add = {this.addIngradientHandler}
-              remove={this.removeIngradientHandler}/>
+              remove={this.removeIngradientHandler}
+              price={this.state.totalPrice}
+              />
             </Aux>
         );
     }
