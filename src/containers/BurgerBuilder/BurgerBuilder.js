@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-
-const IngradientPrices = {
-    salad:0.5,
-    cheese:0.4,
-    bacon:0.7,
-    meat:1.3
-};
+import IngradientPrices from '../../constants/constants';
 
 class BurgerBuilder extends Component {
 
@@ -19,7 +13,7 @@ class BurgerBuilder extends Component {
             meat:0,
             bacon:0
         },
-        totalPrice:4
+        totalPrice:4,
     };
     updateIndradientList = function(type , operation) {        
         const oldCount = this.state.ingradients[type];
@@ -33,17 +27,18 @@ class BurgerBuilder extends Component {
         updatedIngradients[type]=updatedCount;
         return updatedIngradients ;
     };
-    updatePrice = function(type , operation) {
+    updatePrice = (type , operation) => {
         const oldPrice = this.state.totalPrice;
         const valueAdded = IngradientPrices[type];
-        var newPrice = null ;
+        var newPrice = null;
         if (operation==="ADD"){
-            newPrice = oldPrice + valueAdded;}
+            newPrice = oldPrice + valueAdded;
+        }
         else if(operation === "REM") {
-            if (oldPrice === 4){return {...this.state.totalPrice}}
+            if (oldPrice === 4){return {...this.state.totalPrice};};
 
              newPrice = oldPrice - valueAdded;
-        }
+        };
         return newPrice ;
 
     }
