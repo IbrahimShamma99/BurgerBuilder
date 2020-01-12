@@ -4,8 +4,9 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import IngradientPrices from '../../constants/constants';
 import Modal from '../../components/UI/Modal/Modal';
-class BurgerBuilder extends Component {
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
+class BurgerBuilder extends Component {
     state = {
         ingradients:{
             salad:0,
@@ -14,7 +15,7 @@ class BurgerBuilder extends Component {
             bacon:0
         },
         totalPrice:4,
-        purchasable:false
+        purchasable:false,
     };
 
     updatePurchase = ()=> {
@@ -31,33 +32,44 @@ class BurgerBuilder extends Component {
         if (sum ===0){this.setState({purchasable:false})}
         else{this.setState({purchasable:true})};
     };
-    updateIndradientList = function(type , operation) {        
+    
+    updateIndradientList = (type , operation)=> {        
         const oldCount = this.state.ingradients[type];
         var updatedCount = null;
         if (operation==="ADD"){updatedCount = oldCount +1 ;}
         else if (operation==="REM"){
-            if (oldCount === 0){return {...this.state.ingradients}}
+            if (oldCount === 0){return this.state.ingradients}
             updatedCount = oldCount -1;
         };
-
         const updatedIngradients = {...this.state.ingradients};
         updatedIngradients[type]=updatedCount;
         return updatedIngradients ;
     };
+    
     updatePrice = (type , operation) => {
         const oldPrice = this.state.totalPrice;
         const valueAdded = IngradientPrices[type];
         var newPrice = null;
+        
         if (operation==="ADD"){
             newPrice = oldPrice + valueAdded;
         }
         else if(operation === "REM") {
-            if (oldPrice === 4){return {...this.state.totalPrice};};
+            const oldCount = this.state.ingradients[type];
+            if (oldPrice === 4 || oldCount ===0){return {...this.state.totalPrice};};
 
              newPrice = oldPrice - valueAdded;
         };
+
+        if (newPrice < 4 ){
+         newPrice = 4 ;
+        } 
+        else{          
+        return newPrice ;
+        }
         return newPrice ;
     };
+
     addIngradientHandler = (type) => {
         const updatedIngradients = this.updateIndradientList(type,"ADD");
         const newPrice =this.updatePrice(type,"ADD");
@@ -71,10 +83,13 @@ class BurgerBuilder extends Component {
         this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
         this.updatePurchase();
     };
-    render() {
-        return ( 
+    
+    render(){
+        return (
             <Aux>
-            <Modal/>
+            <Modal>
+                <OrderSummary ingradients={this.state.ingradients}/>
+            </Modal>
             <Burger ingradients={this.state.ingradients} />
             <BuildControls
               add = {this.addIngradientHandler}
@@ -85,8 +100,6 @@ class BurgerBuilder extends Component {
             </Aux>
         );
     }
-
 };
-
 
 export default BurgerBuilder;
