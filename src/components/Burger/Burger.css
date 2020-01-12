@@ -22,6 +22,14 @@
     }
 }
 
+.offer-warning {
+    border-color: #f0ad4e;
+}
+
+.offer-warning .shape {
+    border-color: transparent #f0ad4e transparent transparent;
+}
+
 @media(min-width:1000px) and (min-height:750) {
     .Burger {
         width: 700;

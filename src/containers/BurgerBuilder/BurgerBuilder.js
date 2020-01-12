@@ -40,9 +40,7 @@ class BurgerBuilder extends Component {
              newPrice = oldPrice - valueAdded;
         };
         return newPrice ;
-
-    }
-
+    };
     addIngradientHandler = (type) => {
         const updatedIngradients = this.updateIndradientList(type,"ADD");
         const newPrice =this.updatePrice(type,"ADD");
@@ -59,7 +57,8 @@ class BurgerBuilder extends Component {
     render() {
         return ( 
             <Aux>
-            <Burger ingradients={this.state.ingradients} />
+            <Burger price={this.state.totalPrice}
+             ingradients={this.state.ingradients} />
             <BuildControls
               add = {this.addIngradientHandler}
               remove={this.removeIngradientHandler}/>
