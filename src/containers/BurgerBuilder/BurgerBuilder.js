@@ -3,7 +3,7 @@ import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import IngradientPrices from '../../constants/constants';
-
+import Modal from '../../components/UI/Modal/Modal';
 class BurgerBuilder extends Component {
 
     state = {
@@ -70,11 +70,11 @@ class BurgerBuilder extends Component {
         const newPrice =this.updatePrice(type,"REM");
         this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
         this.updatePurchase();
-
     };
     render() {
         return ( 
             <Aux>
+            <Modal/>
             <Burger ingradients={this.state.ingradients} />
             <BuildControls
               add = {this.addIngradientHandler}
