@@ -5,5 +5,9 @@
 }
 
 .Logo img {
-    height: 10%;
+    display: inline-block;
+    vertical-align: top;
+    width: 150px;
+    height: 75px;
+    margin-right: 20px;
 }
