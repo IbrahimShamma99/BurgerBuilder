@@ -15,6 +15,7 @@ const orderSummary = (props) => {
             <ul>
                 {ingradientSummary}
             </ul>
+            <p>Total Price is : {props.price}</p>
             <p>Continue to Checkout?</p>
             <Button clicked={props.cancel} 
             theme="Danger">CANCEL</Button>
