@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './Modal.css';
 import Aux from '../../../hoc/Aux';
 import Backdrop from '../../UI/Backdrop/Backdrop';
+
 const modal = (props) => {
     return ( 
         <Aux>
@@ -17,4 +18,5 @@ const modal = (props) => {
          </Aux>
     )
 };
+
 export default modal;

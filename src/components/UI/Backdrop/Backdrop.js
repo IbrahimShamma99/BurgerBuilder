@@ -4,7 +4,6 @@ const backdrop = (props) => {
     return(
     props.show? <div onClick={props.click}
     className={classes.Backdrop}>
-
     </div>
     :null
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import Aux from '../../../hoc/Aux';
-
+import Button from '../../UI/Button/Button';
 const orderSummary = (props) => {
     const Ingradient = props.ingradients;
     
@@ -16,6 +16,8 @@ const orderSummary = (props) => {
                 {ingradientSummary}
             </ul>
             <p>Continue to Checkout?</p>
+            <Button theme="Danger">CANCEL</Button>
+            <Button theme="Success">CONTINUE</Button>
         </Aux>
     )
 };
