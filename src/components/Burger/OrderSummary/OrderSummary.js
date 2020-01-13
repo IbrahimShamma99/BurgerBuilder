@@ -16,8 +16,10 @@ const orderSummary = (props) => {
                 {ingradientSummary}
             </ul>
             <p>Continue to Checkout?</p>
-            <Button theme="Danger">CANCEL</Button>
-            <Button theme="Success">CONTINUE</Button>
+            <Button clicked={props.cancel} 
+            theme="Danger">CANCEL</Button>
+            <Button clicked={props.continue}
+            theme="Success">CONTINUE</Button>
         </Aux>
     )
 };
