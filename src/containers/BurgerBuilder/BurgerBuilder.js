@@ -1,122 +1,153 @@
 import React, { Component } from 'react';
-import Aux from '../../hoc/Aux';
+
+import Aux from '../../hoc/Aux/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import IngradientPrices from '../../constants/constants';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-orders';
+
+const INGREDIENT_PRICES = {
+    salad: 0.5,
+    cheese: 0.4,
+    meat: 1.3,
+    bacon: 0.7
+};
 
 class BurgerBuilder extends Component {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {...}
+    // }
     state = {
-        ingradients:{
-            salad:0,
-            cheese:0,
-            meat:0,
-            bacon:0
-        },
-        totalPrice:4,
-        purchasable:false,
-        purchasing:false
-    };
+        ingredients: null,
+        totalPrice: 4,
+        purchasable: false,
+        purchasing: false,
+        loading: false,
+        error: false
+    }
 
-    updatePurchasable = ()=> {
-        const ingradients = {...this.state.ingradients};
-        var sum = 0 ;
-        //NOTE Outputs salad cheese meat bacon
-        Object.keys(ingradients)
-        .map((key)=>{
-            let element=ingradients[key];//NOTE Ex:ingradients["salad"]=(5)
-            sum +=element;
-            return element
-        });
+    componentDidMount () {
+        console.log(this.props);
+        axios.get( 'https://react-my-burger.firebaseio.com/ingredients.json' )
+            .then( response => {
+                this.setState( { ingredients: response.data } );
+            } )
+            .catch( error => {
+                this.setState( { error: true } );
+            } );
+    }
 
-        if (sum ===0){this.setState({purchasable:false})}
-        else{this.setState({purchasable:true})};
-    };
-    
-    updateIndradientList = (type , operation)=> {        
-        const oldCount = this.state.ingradients[type];
-        var updatedCount = null;
-        if (operation==="ADD"){updatedCount = oldCount +1 ;}
-        else if (operation==="REM"){
-            if (oldCount === 0){return this.state.ingradients}
-            updatedCount = oldCount -1;
+    updatePurchaseState ( ingredients ) {
+        const sum = Object.keys( ingredients )
+            .map( igKey => {
+                return ingredients[igKey];
+            } )
+            .reduce( ( sum, el ) => {
+                return sum + el;
+            }, 0 );
+        this.setState( { purchasable: sum > 0 } );
+    }
+
+    addIngredientHandler = ( type ) => {
+        const oldCount = this.state.ingredients[type];
+        const updatedCount = oldCount + 1;
+        const updatedIngredients = {
+            ...this.state.ingredients
         };
-        const updatedIngradients = {...this.state.ingradients};
-        updatedIngradients[type]=updatedCount;
-        return updatedIngradients ;
-    };
-    
-    updatePrice = (type , operation) => {
+        updatedIngredients[type] = updatedCount;
+        const priceAddition = INGREDIENT_PRICES[type];
         const oldPrice = this.state.totalPrice;
-        const valueAdded = IngradientPrices[type];
-        var newPrice = null;
-        
-        if (operation==="ADD"){
-            newPrice = oldPrice + valueAdded;
-        }
-        else if(operation === "REM") {
-            const oldCount = this.state.ingradients[type];
-            if (oldPrice === 4 || oldCount ===0){return {...this.state.totalPrice};};
+        const newPrice = oldPrice + priceAddition;
+        this.setState( { totalPrice: newPrice, ingredients: updatedIngredients } );
+        this.updatePurchaseState( updatedIngredients );
+    }
 
-             newPrice = oldPrice - valueAdded;
+    removeIngredientHandler = ( type ) => {
+        const oldCount = this.state.ingredients[type];
+        if ( oldCount <= 0 ) {
+            return;
+        }
+        const updatedCount = oldCount - 1;
+        const updatedIngredients = {
+            ...this.state.ingredients
         };
+        updatedIngredients[type] = updatedCount;
+        const priceDeduction = INGREDIENT_PRICES[type];
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice - priceDeduction;
+        this.setState( { totalPrice: newPrice, ingredients: updatedIngredients } );
+        this.updatePurchaseState( updatedIngredients );
+    }
 
-        if (newPrice < 4 ){
-         newPrice = 4 ;
-        } 
-        else{          
-        return newPrice ;
+    purchaseHandler = () => {
+        this.setState( { purchasing: true } );
+    }
+
+    purchaseCancelHandler = () => {
+        this.setState( { purchasing: false } );
+    }
+
+    purchaseContinueHandler = () => {
+        // alert('You continue!');
+        
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        return newPrice ;
-    };
-    purchasingHandler = ()=>{
-            this.setState({purchasing:true});
-    };
-    PurchaseCancelHandler = () =>{
-        this.setState({purchasing:false});
-    };
-    PurchaseContinueHandler = () =>{
-        alert("continue");
-    };
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
+    }
 
-    addIngradientHandler = (type) => {
-        const updatedIngradients = this.updateIndradientList(type,"ADD");
-        const newPrice =this.updatePrice(type,"ADD");
-        this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
-        this.updatePurchasable();
-    };
+    render () {
+        const disabledInfo = {
+            ...this.state.ingredients
+        };
+        for ( let key in disabledInfo ) {
+            disabledInfo[key] = disabledInfo[key] <= 0
+        }
+        let orderSummary = null;
+        let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
 
-    removeIngradientHandler = (type) => {
-        const updatedIngradients = this.updateIndradientList(type,"REM");
-        const newPrice =this.updatePrice(type,"REM");
-        this.setState({ingradients:updatedIngradients,totalPrice:newPrice});
-        this.updatePurchasable();
-    };
-    
-    render(){
+        if ( this.state.ingredients ) {
+            burger = (
+                <Aux>
+                    <Burger ingredients={this.state.ingredients} />
+                    <BuildControls
+                        ingredientAdded={this.addIngredientHandler}
+                        ingredientRemoved={this.removeIngredientHandler}
+                        disabled={disabledInfo}
+                        purchasable={this.state.purchasable}
+                        ordered={this.purchaseHandler}
+                        price={this.state.totalPrice} />
+                </Aux>
+            );
+            orderSummary = <OrderSummary
+                ingredients={this.state.ingredients}
+                price={this.state.totalPrice}
+                purchaseCancelled={this.purchaseCancelHandler}
+                purchaseContinued={this.purchaseContinueHandler} />;
+        }
+        if ( this.state.loading ) {
+            orderSummary = <Spinner />;
+        }
+        // {salad: true, meat: false, ...}
         return (
             <Aux>
-            <Modal modalClosed={this.PurchaseCancelHandler}
-            show = {this.state.purchasing}
-            >
-                <OrderSummary 
-                price={this.state.totalPrice}
-                continue={this.PurchaseContinueHandler}
-                cancel={this.PurchaseCancelHandler}
-                ingradients={this.state.ingradients}/>
-            </Modal>
-            <Burger ingradients={this.state.ingradients} />
-            <BuildControls
-              add = {this.addIngradientHandler}
-              remove={this.removeIngradientHandler}
-              price={this.state.totalPrice}
-              purchasable={this.state.purchasable}
-              purchasing = {this.purchasingHandler}
-              />
+                <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+                    {orderSummary}
+                </Modal>
+                {burger}
             </Aux>
         );
     }
-};
+}
 
-export default BurgerBuilder;
+export default withErrorHandler( BurgerBuilder, axios );

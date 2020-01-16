@@ -16,6 +16,7 @@
     outline: none;
 }
 
+
 .BuildControl button:disabled {
     background-color: #AC9980;
     border: 1px solid #7E7365;
@@ -35,7 +36,7 @@
     width: 80px;
 }
 
-.BuildControl .Less {
+.BuildControl .Less {  
     background-color: #D39952;
     color: white;
 }
@@ -45,14 +46,12 @@
     color: white;
 }
 
-.BuildControl .Less:hover,
-.BuildControl .Less:active {
+.BuildControl .Less:hover, .BuildControl .Less:active {  
     background-color: #DAA972;
     color: white;
 }
 
-.BuildControl .More:hover,
-.BuildControl .More:active {
+.BuildControl .More:hover,.BuildControl .More:active {
     background-color: #99703F;
     color: white;
 }

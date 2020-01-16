@@ -1,25 +1,27 @@
 import React from 'react';
-import classes from './Burger.css';
-import BurgerIngradients from './BurgerIngradient/BurgerIngradient';
 
-const burger = (props) => {
-    var transformedIngradients = Object.keys(props.ingradients)
-    .map((igKey)=> {
-        return [...Array(props.ingradients[igKey])].map((_,i)=> {
-            return <BurgerIngradients key={igKey+i} type={igKey}/> ;
-        });
-    }).reduce((arr , el)=>{
-        return arr.concat(el);
-    },[]);
-    
-    if (transformedIngradients.length === 0){
-        transformedIngradients = <p>Please add up ingradients</p> ;
-    };
+import classes from './Burger.css';
+import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
+
+const burger = ( props ) => {
+    console.log(props);
+    let transformedIngredients = Object.keys( props.ingredients )
+        .map( igKey => {
+            return [...Array( props.ingredients[igKey] )].map( ( _, i ) => {
+                return <BurgerIngredient key={igKey + i} type={igKey} />;
+            } );
+        } )
+        .reduce((arr, el) => {
+            return arr.concat(el)
+        }, []);
+    if (transformedIngredients.length === 0) {
+        transformedIngredients = <p>Please start adding ingredients!</p>;
+    }
     return (
         <div className={classes.Burger}>
-            <BurgerIngradients type="bread-top"/>
-            {transformedIngradients}
-            <BurgerIngradients type="bread-buttom"/>
+            <BurgerIngredient type="bread-top" />
+            {transformedIngredients}
+            <BurgerIngredient type="bread-bottom" />
         </div>
     );
 };

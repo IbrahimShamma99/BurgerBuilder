@@ -8,31 +8,23 @@
     font-size: 1.2rem;
 }
 
-@media(min-width:500px) and (min-height:400) {
+@media (min-width: 500px) and (min-height: 400px) {
     .Burger {
-        width: 450;
-        height: 400;
+        width: 350px;
+        height: 300px;
     }
 }
 
-@media(min-width:500px) and (min-height:401) {
+@media (min-width: 500px) and (min-height: 401px) {
     .Burger {
-        width: 350;
-        height: 300;
+        width: 450px;
+        height: 400px;
     }
 }
 
-.offer-warning {
-    border-color: #f0ad4e;
-}
-
-.offer-warning .shape {
-    border-color: transparent #f0ad4e transparent transparent;
-}
-
-@media(min-width:1000px) and (min-height:750) {
+@media (min-width: 1000px) and (min-height: 700px) {
     .Burger {
-        width: 700;
-        height: 600;
+        width: 700px;
+        height: 600px;
     }
 }

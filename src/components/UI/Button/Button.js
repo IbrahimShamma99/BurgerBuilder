@@ -1,12 +1,12 @@
 import React from 'react';
-import Aux from '../../../hoc/Aux';
+
 import classes from './Button.css';
-const button = (props) =>  {
-    return (
-        <Aux>
-        <button onClick={props.clicked} className={[classes.Button, classes[props.theme]].join(' ')}>{props.children}</button>
-        </Aux>
-    );
-};
+
+const button = (props) => (
+    <button
+        disabled={props.disabled}
+        className={[classes.Button, classes[props.btnType]].join(' ')}
+        onClick={props.clicked}>{props.children}</button>
+);
 
 export default button;

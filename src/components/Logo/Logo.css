@@ -1,13 +1,11 @@
 .Logo {
-    height: 10%;
+    background-color: white;
     padding: 8px;
+    height: 100%;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 
 .Logo img {
-    display: inline-block;
-    vertical-align: top;
-    width: 150px;
-    height: 75px;
-    margin-right: 20px;
+    height: 100%;
 }

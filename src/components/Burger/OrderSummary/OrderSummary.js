@@ -1,34 +1,37 @@
-import React , {Component} from 'react';
-import Aux from '../../../hoc/Aux';
+import React, { Component } from 'react';
+
+import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
 class OrderSummary extends Component {
-    componentWillUpdate(){
-        console.log("[OrderSummary] componentWillUpdate");
-    };
+    // This could be a functional component, doesn't have to be a class
+    componentWillUpdate() {
+        console.log('[OrderSummary] WillUpdate');
+    }
 
-    render(){
-        const Ingradient = this.props.ingradients;
-    
-        var ingradientSummary = Object.keys(Ingradient).map((key)=> {
-        return( <li key={key}><span style={{textTransform:"capitalize"}}>
-            {key}</span>={Ingradient[key]} </li>);
-        });
-    
-        return(
-        <Aux>
-            <h1>Your order</h1>
-            <p>Delicious order with the following:</p>
-            <ul>
-                {ingradientSummary}
-            </ul>
-            <p>Total Price is : {this.props.price}</p>
-            <p>Continue to Checkout?</p>
-            <Button clicked={this.props.cancel} 
-            theme="Danger">CANCEL</Button>
-            <Button clicked={this.props.continue}
-            theme="Success">CONTINUE</Button>
-        </Aux>
-    )};
-};
+    render () {
+        const ingredientSummary = Object.keys( this.props.ingredients )
+            .map( igKey => {
+                return (
+                    <li key={igKey}>
+                        <span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {this.props.ingredients[igKey]}
+                    </li> );
+            } );
+
+        return (
+            <Aux>
+                <h3>Your Order</h3>
+                <p>A delicious burger with the following ingredients:</p>
+                <ul>
+                    {ingredientSummary}
+                </ul>
+                <p><strong>Total Price: {this.props.price.toFixed( 2 )}</strong></p>
+                <p>Continue to Checkout?</p>
+                <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
+                <Button btnType="Success" clicked={this.props.purchaseContinued}>CONTINUE</Button>
+            </Aux>
+        );
+    }
+}
+
 export default OrderSummary;
