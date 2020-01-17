@@ -94,7 +94,6 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
         // alert('You continue!');
-        
         const queryParams = [];
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
@@ -127,12 +126,12 @@ class BurgerBuilder extends Component {
                         disabled={disabledInfo}
                         purchasable={this.state.purchasable}
                         ordered={this.purchaseHandler}
-                        price={this.state.totalPrice} />
+                        price={this.props.price} />
                 </Aux>
             );
             orderSummary = <OrderSummary
                 ingredients={this.props.ings}
-                price={this.state.totalPrice}
+                price={this.props.price}
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />;
         }
@@ -152,7 +151,8 @@ class BurgerBuilder extends Component {
 }
 const mapStateToProps= state => {
     return {
-        ings:state.ingredients
+        ings:state.ingredients,
+        price:state.totalPrice
     }
 }
 
